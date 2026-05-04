@@ -10,6 +10,7 @@ editor: visual
 #install.packages("dataRetrieval")
 library(dataRetrieval)
 library(tidyverse)
+library(here)
 
 siteNumbers <- c("14211720", "14211010", "14166000")
 parameterCd <- "00010"  # water temperature
@@ -31,6 +32,7 @@ ggplot(temp_data, aes(x=Date, y=temp_C, color=site_no)) +
        x="Date", y="Temperature (°C)", color="Site Number") +
   theme_minimal()
 
+temp_data <- write.csv(temp_data, file = here("temp_data"))
 
 
 ```
