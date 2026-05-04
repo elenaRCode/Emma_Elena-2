@@ -69,10 +69,10 @@ dec_summary <- dec_data |>
 dec_plot <- ggplot(dec_summary, 
                    aes(x=year, y=mean_temp, color=site_no)) + 
   geom_line(alpha=0.5) +
-  geom_point(size=0.5) +
+  geom_point(size=0.8) +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(title="December Stream Temperature at Willamette River Sites",
-       x="Year", y="Average Temperature (°C)", color="Site Number") +
+  labs(title="Mean December Temperature by Site (2010-2023)",
+       x="Year", y="Mean Temperature (°C)", color="Site Number") +
   theme_minimal()
 print(dec_plot)
 
