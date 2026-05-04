@@ -6,8 +6,11 @@ format: html
 editor: visual
 params:
   use_local_data: true        # Set to FALSE to access the NWIS server
-  local_file: ".csv" # Path to your downloaded data
-  site_id: ""         # Your NWIS site ID
+  local_file: "temp_data.csv" 
+  site_ids:
+  - "4211720"
+  - "14211010"
+  - "14166000" 
 ---
 
 ```{r}
