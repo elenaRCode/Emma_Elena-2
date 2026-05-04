@@ -1,26 +1,31 @@
 ---
 title: "Elena_quarto"
+date: May 4th, 2026
 format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+# **June Temperature Trends**
 
 ```{r}
-1 + 1
-```
+#| label: June_Trends
+#| include: true
+#| echo: true
+#| message: false
+#| warning: false
 
-You can add options to executable code like this
+# filter for June temperatures
+june_data <- subset(temp_data, month == "Jun")
+# fit a GLM model to see if there is a trend in July temperatures over time, separated by sit
+june_model <- glm(temp_C ~ year*site_no, data = june_data)
+summary(june_model)
 
-```{r}
-#| echo: false
-2 * 2
+
+
+
+ggplot()
+
+
 ```
 
 The `echo: false` option disables the printing of code (only output is displayed).
