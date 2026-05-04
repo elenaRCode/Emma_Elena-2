@@ -1,0 +1,80 @@
+---
+title: "Emma_Branch_HW2"
+author: "Emma Sayre""
+format: html
+editor: visual
+---
+
+**Add Temperature Data**
+
+```{r}
+#install.packages("dataRetrieval")
+library(dataRetrieval)
+library(tidyverse)
+library(here)
+
+siteNumbers <- c("14211720", "14211010", "14166000")
+parameterCd <- "00010"  # water temperature
+startDate <- "2010-01-01"
+endDate <- "2023-12-31"
+
+temp_data <- readNWISdv(siteNumbers, parameterCd, startDate, endDate)
+temp_data <- temp_data [ ,-5]
+
+# rename columns for clarity
+colnames(temp_data) <- c("agency_cd", "site_no", "Date", "temp_C")
+
+# extract some date info for use later
+temp_data$month = month(temp_data$Date, label=TRUE)
+temp_data$year = year(temp_data$Date)
+view(temp_data)
+
+temp_data$month <- month(temp_data$Date, label=TRUE)
+temp_data$year  <- year(temp_data$Date)
+write_csv(temp_data, here("temp_data.csv"))
+```
+
+**December Temperature Model**
+
+```{r}
+#| label: dec_model
+#| include: true
+#| echo: true
+#| message: false
+#| warning: false
+
+library(tidyverse)
+# filter for December temperatures
+dec_data <- subset(temp_data, month == "Dec")
+
+# fit a GLM model to see if there is a trend in Dec temperatures over time, separated by sit
+dec_model <- glm(temp_C ~ year*site_no, data = dec_data)
+summary(dec_model)
+
+```
+
+**December Temperature Plot**
+
+```{r}
+#| label: dec_plot
+#| include: true
+#| echo: true
+#| message: false
+#| warning: false
+
+dec_summary <- dec_data |>
+  group_by(year, site_no) |>
+  summarize(mean_temp = mean(temp_C, na.rm=TRUE))
+
+dec_plot <- ggplot(dec_summary, 
+                   aes(x=year, y=mean_temp, color=site_no)) + 
+  geom_line(alpha=0.5) +
+  geom_point(size=0.8) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title="Mean December Stream Temperature by Site (2010-2023)",
+       x="Year", y="Mean Temperature (°C)", color="Site Number") +
+  theme_minimal()
+print(dec_plot)
+
+
+```
