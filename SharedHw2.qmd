@@ -14,9 +14,16 @@ params:
 ---
 
 ```{r}
+#| label: upload_data
+#| include: true
+#| echo: false
+#| message: false
+#| warning: false
+
 #install.packages("dataRetrieval")
 library(dataRetrieval)
 library(tidyverse)
+library(here)
 
 siteNumbers <- c("14211720", "14211010", "14166000")
 parameterCd <- "00010"  # water temperature
@@ -31,6 +38,15 @@ colnames(temp_data) <- c("agency_cd", "site_no", "Date", "temp_C")
 temp_data$month = month(temp_data$Date, label=TRUE)
 temp_data$year = year(temp_data$Date)
 
+```
+
+```{r}
+#| label: plot_data
+#| include: true
+#| echo: true
+#| message: false
+#| warning: false
+
 # check by plotting
 ggplot(temp_data, aes(x=Date, y=temp_C, color=site_no)) +
   geom_line() +
@@ -41,5 +57,8 @@ ggplot(temp_data, aes(x=Date, y=temp_C, color=site_no)) +
 temp_data <- write.csv(temp_data, file = here("temp_data"))
 
 wi_sites <- whatNWISsites(stateCd = "WI", siteType = "ST")
+```
+
+```{r}
 
 ```
