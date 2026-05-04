@@ -87,5 +87,4 @@ yearly_summary <- temp_data |>
 
 
 
-
 ```
