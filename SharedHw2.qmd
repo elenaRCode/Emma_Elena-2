@@ -79,12 +79,11 @@ ggplot(temp_data, aes(x=Date, y=temp_C, color=site_no)) +
 #| warning: false
 
 yearly_summary <- temp_data |>
-  group_by(year) |>
+  group_by(year,site_no) |>
   summarize(
     mean_temp = mean(temp_C, na.rm = TRUE),
     min_temp  = min(temp_C,  na.rm = TRUE),
-    max_temp  = max(temp_C,  na.rm = TRUE)
-  )
+    max_temp  = max(temp_C,  na.rm = TRUE))
 
 
 
