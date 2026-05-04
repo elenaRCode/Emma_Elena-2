@@ -4,13 +4,16 @@ author: "Emma Sayre & Elena Nirgiotis"
 date: May 4, 2026
 format: html
 editor: visual
+params:
+  use_local_data: true        # Set to FALSE to access the NWIS server
+  local_file: ".csv" # Path to your downloaded data
+  site_id: "01646500"         # Your NWIS site ID
 ---
 
 ```{r}
 #install.packages("dataRetrieval")
 library(dataRetrieval)
 library(tidyverse)
-library(here)
 
 siteNumbers <- c("14211720", "14211010", "14166000")
 parameterCd <- "00010"  # water temperature
@@ -32,7 +35,6 @@ ggplot(temp_data, aes(x=Date, y=temp_C, color=site_no)) +
        x="Date", y="Temperature (°C)", color="Site Number") +
   theme_minimal()
 
-temp_data <- write.csv(temp_data, file = here("temp_data"))
-
+wi_sites <- whatNWISsites(stateCd = "WI", siteType = "ST")
 
 ```
