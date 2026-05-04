@@ -31,12 +31,13 @@ startDate <- "2010-01-01"
 endDate <- "2023-12-31"
 
 temp_data <- readNWISdv(siteNumbers, parameterCd, startDate, endDate)
-
+temp_data <- temp_data [ ,-5]
 # rename columns for clarity
 colnames(temp_data) <- c("agency_cd", "site_no", "Date", "temp_C")
 # extract some date info for use later
 temp_data$month = month(temp_data$Date, label=TRUE)
 temp_data$year = year(temp_data$Date)
+View(temp_data)
 
 ```
 
@@ -56,9 +57,36 @@ ggplot(temp_data, aes(x=Date, y=temp_C, color=site_no)) +
 
 temp_data <- write.csv(temp_data, file = here("temp_data"))
 
-wi_sites <- whatNWISsites(stateCd = "WI", siteType = "ST")
+
+
 ```
 
 ```{r}
+#| label: plot_data
+#| include: true
+#| echo: true
+#| message: false
+#| warning: false
+
+mean_temp <- temp_data |>
+  group_by(year) |>
+  summarize(mean_temp = mean(temp_C)) |>
+  drop_na()
+view(mean_temp)
+
+min_temp <- temp_data |>
+  group_by(year) |>
+  summarize(min_temp = min(temp_C)) |>
+  drop_na()
+view(min_temp)
+
+max_temp <- temp_data |>
+  group_by(year) |>
+  summarize(max_temp = max(temp_C)) |>
+  drop_na()
+view(max_temp)
+
+
+
 
 ```
