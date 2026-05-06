@@ -5,28 +5,14 @@ date: May 6, 2026
 format: html
 editor: visual
 ---
+
 ## Overview
 
 Our team analyzed mean stream temperatures across three sites in Oregon's Willametter River to better understand how this variable differs between winter and summer. We utilized USGS data from 2010-2023 to calculate the average stream temperature for the months of June and December.
 
 ## Summary of Findings
 
-The figure below shows that December has cooler stream temperatures, with an average of 6.55 degrees Celsius compared to June's average of 16.13 degrees Celsius. Over the past 13 years all sites across both months have seen a trend of increasing temperatures. This positive trend in temperatures over both seasons highlights that the impacts of climate change can be seen even in this local ecosystem. 
-
-```{r}
-#| label: load_libs
-#| include: false
-#| echo: false
-#| message: false
-#| warning: false
-
-#install.packages("dataRetrieval")
-library(dataRetrieval)
-library(tidyverse)
-library(here)
-library(patchwork)
-```
-
+The figure below shows that December has cooler stream temperatures, with an average of 6.55 degrees Celsius compared to June's average of 16.13 degrees Celsius. Over the past 13 years all sites across both months have seen a trend of increasing temperatures. This positive trend in temperatures over both seasons highlights that the impacts of climate change can be seen even in this local ecosystem. GLMs confirmed statistically significant warming trends in both months, with June temperatures increasing at approximately +0.138°C per year (p \< 0.001) and December temperatures increasing at +0.038°C per year (p = 0.026), with no significant difference in warming rate among the three sites in either month.
 
 ```{r}
 #| label: upload_data
@@ -136,4 +122,4 @@ june_plot + dec_plot +
 
 ```
 
-Further detail on code and analysis can be found within the Github Repository. 
+Further detail on code and analysis can be found within the Github Repository.
