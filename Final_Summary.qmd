@@ -56,12 +56,10 @@ temp_data$year  <- year(temp_data$Date)
 write_csv(temp_data, here("temp_data.csv"))
 ```
 
-#### June Temperature Trends
-
 ```{r}
 #| label: June_Temp_Trends
 #| include: true
-#| echo: true
+#| echo: false
 #| message: false
 #| warning: false
 
@@ -76,12 +74,10 @@ june_avg <- june_data |>
 
 ```
 
-#### December Temperature Trends
-
 ```{r}
 #| label: Dec_Temp_Trends
-#| include: true
-#| echo: true
+#| include: false
+#| echo: false
 #| message: false
 #| warning: false
 
@@ -103,8 +99,8 @@ summary(dec_model)
 
 ```{r}
 #| label: Temp_Comparison 
-#| include: true
-#| echo: true
+#| include: false
+#| echo: false 
 #| message: false
 #| warning: false
 
