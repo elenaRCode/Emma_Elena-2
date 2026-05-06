@@ -5,7 +5,6 @@ date: May 6, 2026
 format: html
 editor: visual
 ---
-
 ## Overview
 
 Our team analyzed mean stream temperatures in Oregon's Willametter River to better understand how this variable differs between winter and summer. We utilized USGS data from 2010-2023 to calculate the average stream temperature for the months of June and December.
@@ -18,6 +17,7 @@ The figure below shows that winter has cooler stream temperatures, with an avera
 mean(june_avg$mean_temp)
 mean(dec_summary$mean_temp)
 ```
+## Summary of Findings
 
 ```{r}
 #| label: load_libs
@@ -110,7 +110,7 @@ summary(dec_model)
 
 ```{r}
 #| label: Temp_Comparison 
-#| include: false
+#| include: true
 #| echo: false 
 #| message: false
 #| warning: false
@@ -119,18 +119,24 @@ june_plot <- ggplot(june_avg, aes(x = year, y = mean_temp, color = site_no)) +
   geom_line(alpha = 0.5) +
   geom_point(size = 0.8) +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Mean June Temperature by Site (2010–2023)",
-       x = "Year", y = "Mean Temperature (°C)", color = "Site") +
-  theme_minimal()
+  labs(subtitle = "June",
+       x = "Year", y = "Mean Temperature (°C)", color = "Site Number") +
+  theme_minimal()+
+theme(plot.subtitle = element_text(hjust = 0.5))
 
-dec_plot <- ggplot(dec_summary, 
-                   aes(x=year, y=mean_temp, color=site_no)) + 
-  geom_line(alpha=0.5) +
-  geom_point(size=0.8) +
+dec_plot <- ggplot(dec_summary, aes(x = year, y = mean_temp, color = site_no)) +
+  geom_line(alpha = 0.5) +
+  geom_point(size = 0.8) +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(title="Mean December Temperature by Site (2010-2023)", 
-       x="Year", y="Mean Temperature (°C)", color="Site Number") +
-  theme_minimal()
+  labs(subtitle = "December",
+       x = "Year", y = "Mean Temperature (°C)", color = "Site Number") +
+  theme_minimal()+
+theme(plot.subtitle = element_text(hjust = 0.5))
 
-june_plot + dec_plot
+
+june_plot + dec_plot +
+  plot_layout(guides = "collect") +
+  plot_annotation(title = "Mean Stream Temperature by Site (2010–2023)",
+                  theme = theme(plot.title = element_text(hjust = 0.5)))
+
 ```
