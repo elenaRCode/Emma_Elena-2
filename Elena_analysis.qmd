@@ -1,0 +1,38 @@
+---
+title: "Elena_quarto"
+date: May 4th, 2026
+format: html
+editor: visual
+---
+
+# **June Temperature Trends**
+
+```{r}
+#| label: June_Trends
+#| include: true
+#| echo: true
+#| message: false
+#| warning: false
+
+june_data <- subset(temp_data, month == "Jun")
+
+june_model <- glm(temp_C ~ year * site_no, data = june_data)
+summary(june_model)
+
+june_avg <- june_data |>
+  group_by(year, site_no) |>
+  summarize(mean_temp = mean(temp_C, na.rm = TRUE))
+
+ggplot(june_avg, aes(x = year, y = mean_temp, color = site_no)) +
+  geom_line(alpha = 0.5) +
+  geom_point(size = 0.8) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Mean June Temperature by Site (2010–2023)",
+       x = "Year", y = "Mean Temperature (°C)", color = "Site") +
+  theme_minimal()
+
+
+
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
