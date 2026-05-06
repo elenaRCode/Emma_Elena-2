@@ -25,41 +25,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -115,98 +80,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Our team analyzed mean stream temperatures in Oregon’s Willametter River to better understand how this variable differs between winter and summer. We utilized USGS data from 2010-2023 to calculate the average stream temperature for the months of June and December.</p>
+</section>
 <section id="summary-of-findings" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-findings">Summary of Findings</h2>
-<section id="june-temperature-trends" class="level4">
-<h4 class="anchored" data-anchor-id="june-temperature-trends">June Temperature Trends</h4>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-glm(formula = temp_C ~ year * site_no, data = june_data)
-
-Coefficients:
-                       Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)          -262.44470   60.98306  -4.304 1.81e-05 ***
-year                    0.13775    0.03024   4.555 5.76e-06 ***
-site_no14211010      -208.59913   86.40809  -2.414   0.0159 *  
-site_no14211720      -152.96022   86.61967  -1.766   0.0777 .  
-year:site_no14211010    0.10341    0.04285   2.413   0.0160 *  
-year:site_no14211720    0.07709    0.04296   1.795   0.0730 .  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-(Dispersion parameter for gaussian family taken to be 6.214176)
-
-    Null deviance: 10319.9  on 1248  degrees of freedom
-Residual deviance:  7724.2  on 1243  degrees of freedom
-AIC: 5834.2
-
-Number of Fisher Scoring iterations: 2</code></pre>
-</div>
-</div>
-</section>
-<section id="december-temperature-trends" class="level4">
-<h4 class="anchored" data-anchor-id="december-temperature-trends">December Temperature Trends</h4>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filter for December temperatures</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>dec_data <span class="ot">&lt;-</span> <span class="fu">subset</span>(temp_data, month <span class="sc">==</span> <span class="st">"Dec"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>dec_summary <span class="ot">&lt;-</span> dec_data <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, site_no) <span class="sc">|&gt;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_temp =</span> <span class="fu">mean</span>(temp_C, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a GLM model to see if there is a trend in Dec temperatures over time, separated by sit</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>dec_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(temp_C <span class="sc">~</span> year<span class="sc">*</span>site_no, <span class="at">data =</span> dec_data)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dec_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-glm(formula = temp_C ~ year * site_no, data = dec_data)
-
-Coefficients:
-                      Estimate Std. Error t value Pr(&gt;|t|)  
-(Intercept)          -68.68072   33.85944  -2.028   0.0427 *
-year                   0.03756    0.01679   2.237   0.0255 *
-site_no14211010      -76.43674   47.83283  -1.598   0.1103  
-site_no14211720      -30.40905   47.93614  -0.634   0.5260  
-year:site_no14211010   0.03722    0.02372   1.569   0.1169  
-year:site_no14211720   0.01501    0.02377   0.632   0.5278  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-(Dispersion parameter for gaussian family taken to be 1.979829)
-
-    Null deviance: 3137.6  on 1298  degrees of freedom
-Residual deviance: 2559.9  on 1293  degrees of freedom
-AIC: 4581.6
-
-Number of Fisher Scoring iterations: 2</code></pre>
-</div>
-</div>
-</section>
+<p>The figure below shows that winter has cooler stream temperatures, with an average of 6.55 degrees Celsius compared to June’s average of 16.13 degrees Celsius.</p>
 <section id="comparing-june-and-december-temperature-trends" class="level4">
 <h4 class="anchored" data-anchor-id="comparing-june-and-december-temperature-trends">Comparing June and December Temperature Trends</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>june_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(june_avg, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> mean_temp, <span class="at">color =</span> site_no)) <span class="sc">+</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mean June Temperature by Site (2010–2023)"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Mean Temperature (°C)"</span>, <span class="at">color =</span> <span class="st">"Site"</span>) <span class="sc">+</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>dec_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dec_summary, </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">aes</span>(<span class="at">x=</span>year, <span class="at">y=</span>mean_temp, <span class="at">color=</span>site_no)) <span class="sc">+</span> </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Mean December Temperature by Site (2010-2023)"</span>, </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Year"</span>, <span class="at">y=</span><span class="st">"Mean Temperature (°C)"</span>, <span class="at">color=</span><span class="st">"Site Number"</span>) <span class="sc">+</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>june_plot <span class="sc">+</span> dec_plot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
