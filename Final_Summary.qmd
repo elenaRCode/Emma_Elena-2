@@ -11,7 +11,7 @@ Our team analyzed mean stream temperatures across three sites in Oregon's Willam
 
 ## Summary of Findings
 
-The figure below shows that December has cooler stream temperatures, with an average of 6.55 degrees Celsius compared to June's average of 16.13 degrees Celsius. Over the past 13 years all sites across both months have seen a trend of increasing temperatures. 
+The figure below shows that December has cooler stream temperatures, with an average of 6.55 degrees Celsius compared to June's average of 16.13 degrees Celsius. Over the past 13 years all sites across both months have seen a trend of increasing temperatures. This positive trend in temperatures over both seasons highlights that the impacts of climate change can be seen even in this local ecosystem. 
 
 ```{r}
 #| label: load_libs
@@ -135,3 +135,5 @@ june_plot + dec_plot +
                   theme = theme(plot.title = element_text(hjust = 0.5)))
 
 ```
+
+Further detail on code and analysis can be found within the Github Repository. 
