@@ -26,6 +26,7 @@ params:
 library(dataRetrieval)
 library(tidyverse)
 library(here)
+library(patchwork)
 
 siteNumbers <- c("14211720", "14211010", "14166000")
 parameterCd <- "00010"  # water temperature
